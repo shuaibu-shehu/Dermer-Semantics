@@ -1,6 +1,6 @@
 # 🧬 Derma-Semantics Pro: Hybrid AI for Explainable Skin Diagnostics
 
-> **A research prototype combining Foundation Models with Statistical Learning to deliver 95% AUC accuracy and interpretable diagnostics.**
+**A research prototype combining Foundation Models with Statistical Learning to deliver 95% AUC accuracy and interpretable diagnostics.**
 
 ## 🚀 The Problem & Solution
 
