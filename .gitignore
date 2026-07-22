@@ -1,4 +1,10 @@
-
-
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md
+
+# Regenerable frozen-feature caches (rebuild from notebooks 01/03)
+caches/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

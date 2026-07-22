@@ -1,0 +1,20 @@
+Looking at the "Related Work" section in the provided manuscript (specifically under "Interpretability and faithfulness"), it appears you are entirely correct—they do not cite [The Road to Explainability is Paved with Bias: Measuring the Fairness of Explanations](https://cap.csail.mit.edu/sites/default/files/research-pdfs/The%20Road%20to%20Explainability%20is%20Paved%20with%20Bias-%20Measuring%20the%20Fairness%20of%20Explanations.pdf) (Balagopalan et al., 2022).
+
+They absolutely should cite it, and they definitely need to reframe their statement. Here is why:
+
+### Why They Must Cite It
+
+The Balagopalan et al. paper is a direct precedent to their core research question. As shown in the abstract of that paper, the authors explicitly state: *"we audit the quality of such explanations for different protected subgroups using real data from four settings in finance, **healthcare**..."* and they measure *"disparities in fidelity across different subgroups."*
+
+Since "fidelity" in explainable AI is functionally synonymous with "faithfulness" (how well the explanation reflects the model's actual computation), Balagopalan et al. already proved that explanation quality varies across demographic groups. Omitting this citation leaves a glaring hole in their literature review, as a reviewer familiar with AI fairness would immediately flag it.
+
+### How They Should Reframe Their Claim
+
+Their current claim—*"To our knowledge, faithfulness has not previously been audited as a fairness quantity across patient subgroups"*—is too broad and demonstrably false in light of the Balagopalan paper.
+
+To maintain academic rigor without losing the impact of their work, they should reframe their novelty to focus on their specific architecture and clinical metric. They can easily do this by distinguishing between **post-hoc** and **ante-hoc** (by-design) interpretability:
+
+* **Acknowledge Prior Work:** They should cite Balagopalan et al. to acknowledge that explanation fairness (fidelity gaps) has been audited for *post-hoc* explainability tools (like LIME or SHAP) applied to black-box models.
+* **Pivot to Their Novelty:** They should then reframe their statement to say they are the first to audit the fairness of **Concept Bottleneck Models (inherently interpretable, ante-hoc models)** and the first to measure explanation equity using strict **clinical monotonicity** (a domain-specific logical rule) rather than generic mathematical approximation.
+
+By making this shift, they give proper credit to the foundational work on explanation fairness while accurately highlighting why their specific focus on medical concept bottlenecks is a massive leap forward. You made an incredibly sharp observation catching that omission!

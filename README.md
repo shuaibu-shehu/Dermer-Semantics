@@ -1,59 +1,42 @@
-# 🧬 Derma-Semantics Pro: Hybrid AI for Explainable Skin Diagnostics
+# Faithful & Fair Concept-Based Dermatology
 
-**A research prototype combining Foundation Models with Statistical Learning to deliver 95% AUC accuracy and interpretable diagnostics.**
+Research project on the **faithfulness** and **skin-tone equity** of concept-based skin-lesion diagnosis, built on the frozen [DermLIP](https://huggingface.co/redlessone/DermLIP_ViT-B-16) vision-language model.
 
-## 🚀 The Problem & Solution
+A concept-bottleneck classifier predicts clinical concepts (the **7-point checklist**) and maps *concepts → diagnosis*, so the explanation is causal by construction. The work studies two questions most derm AI ignores:
 
-**The Problem:** Standard AI models act as "Black Boxes"—they diagnose cancer without explaining *why*, leading to low trust among clinicians.
-**The Solution:** A **Hybrid AI System** that pairs a frozen biomedical vision backbone with a trainable diagnostic head. It provides both a rigorous risk score and a semantic explanation based on the clinical **ABCDE** criteria.
+- **Faithfulness** — how to make the concept-grounded reasoning clinically valid.
+- **Equity** — whether that reasoning is equally faithful across skin tones.
 
----
+> 📄 **Full write-up, objectives, results, and next steps: [`docs/PROJECT.md`](docs/PROJECT.md).**
 
-## ⚙️ System Architecture (The "Two-Brain" Approach)
+## Key findings
 
-1. **The Eye (Feature Extraction):** Uses **Microsoft BioMedCLIP** (pre-trained on 15M medical image-text pairs) to convert skin lesions into high-dimensional semantic embeddings.
-2. **The Brain (Diagnosis):** A custom **Linear Probe (Logistic Regression)** trained on a balanced subset of the ISIC dataset to classify lesions as Benign or Malignant.
-3. **The Voice (Explainability):** Performs Zero-Shot classification against clinical prompts (Asymmetry, Border, Color, Diameter) to generate an interpretable risk profile.
+- **Faithfulness method (H1):** rewarding the model to match the discrete 7-point *rule* is harmful (collapses melanoma sensitivity); a soft **monotonicity** constraint drives intervention consistency **0.74 → 1.00 at no accuracy cost**.
+- **Equity audit (significant):** DermLIP's malignancy detection is **significantly worse on dark skin** — light–dark AUROC gap **0.162, permutation p < 0.0001** on Fitzpatrick17k (n≈16.5k), and **0.75 vs 0.56** with disjoint CIs on biopsy-proven DDI.
+- **Faithfulness gap (H3, novel but preliminary):** explanation faithfulness is **significantly lower on dark skin in-distribution** (0.650 vs 0.603, disjoint 95% CIs on Fitzpatrick) — but does not significantly replicate on the small external set; a first, qualified look at *fairness of explanations*.
+- **Honest negatives:** Group-DRO does **not** close the tone gap (worst-group change CI spans 0); cross-dataset transfer collapses to near-chance (domain shift).
 
----
+## Repository
 
-## 📊 Key Research Findings
+```
+notebooks/            research pipeline (01–05); see docs/PROJECT.md §4
+notebooks/legacy/     pre-pivot BioMedCLIP demo notebooks
+caches/               frozen-feature caches (regenerable)
+results/              experiment result JSONs
+legacy_demo/          old Streamlit demo (app.py)
+docs/PROJECT.md       project documentation
+```
 
-* **High Accuracy (0.95 AUC):** The hybrid model distinguishes between melanoma and benign nevi with 95% discriminative power, comparable to specialist screening.
-* **Bias Mitigation:** Trained on a strictly balanced dataset (400 Benign / 400 Risk images) to prevent class imbalance bias.
-* **Semantic Precision:** The confusion matrix demonstrates balanced Recall (88%) and Precision (85%), proving the model does not just guess "healthy" to minimize error.
+## Approach in one line
 
----
+Encode images **once** with frozen DermLIP → cache embeddings + concept scores → train tiny heads on cached vectors. Only the one-time encoding needs a GPU, so the whole study fits **Kaggle free tier**; all modeling runs on CPU in minutes.
 
-## 📱 How to Interpret the Dashboard
+## Quickstart
 
-1. **Risk Probability (The Bar):**
-* **< 50% (Green):** Semantic features align with benign moles.
-* **> 50% (Red):** Features align with malignant patterns. *Note: In medical AI, any score >50% warrants clinical review.*
+1. **Encode (Kaggle GPU):** run `notebooks/01…` (Derm7pt) and `notebooks/03…` (Fitzpatrick17k mirror + DDI, Internet on).
+2. **Model (local CPU):** run `notebooks/02…` (faithfulness), `notebooks/04…` (fairness), `notebooks/05…` (audit) against the caches.
 
-
-2. **Visual Explanation (The Table):**
-* Breaks down the lesion using the **ABCDE Rule**:
-* **A**symmetry (Symmetrical vs. Asymmetrical)
-* **B**order (Smooth vs. Irregular)
-* **C**olor (Uniform vs. Variegated)
-* **D**iameter (<6mm vs. >6mm)
-
-
-
-
+Local deps: `numpy pandas pyarrow` + CPU `torch`.
 
 ---
-
-## 🛠️ Tech Stack
-
-* **Model:** Microsoft BioMedCLIP (PubMedBERT + ViT)
-* **Training:** Scikit-Learn (Linear Probe)
-* **Interface:** Streamlit (Python)
-* **Validation:** ROC-AUC, Stratified K-Fold Sampling
-
----
-
-## ⚠️ Disclaimer
-
-*This project is a Proof-of-Concept for research purposes only. It is **not** a certified medical device and should not be used for diagnosis.*
+*Legacy: the original BioMedCLIP + Streamlit demo lives in [`legacy_demo/`](legacy_demo/) and [`notebooks/legacy/`](notebooks/legacy/).*

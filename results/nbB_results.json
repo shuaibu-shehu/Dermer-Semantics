@@ -1,0 +1,54 @@
+{
+  "reference_linear_probe": {
+    "acc": 0.8455696105957031,
+    "auroc": 0.8768438068296626
+  },
+  "conditions": {
+    "A_correctness_only": {
+      "mean": {
+        "acc": 0.797468364238739,
+        "bacc": 0.7783671319484711,
+        "auroc": 0.8732067084259446,
+        "concept_auroc": 0.8216657630202352,
+        "intervention_consistency": 0.7389240475992361
+      },
+      "std": {
+        "acc": 0.005468984055999427,
+        "bacc": 0.0028542683100712565,
+        "auroc": 0.0009725553363099167,
+        "concept_auroc": 0.003036860533977311,
+        "intervention_consistency": 0.006490552838792848
+      }
+    },
+    "B_correctness_plus_faithfulness": {
+      "mean": {
+        "acc": 0.8303797443707784,
+        "bacc": 0.7831436196962992,
+        "auroc": 0.8748568734424462,
+        "concept_auroc": 0.8238822951020217,
+        "intervention_consistency": 1.0
+      },
+      "std": {
+        "acc": 0.014469547402864314,
+        "bacc": 0.010195253275805108,
+        "auroc": 0.0016800208099364724,
+        "concept_auroc": 0.0032166656424028766,
+        "intervention_consistency": 0.0
+      }
+    }
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "concepts": [
+    "atyp_pigment_net",
+    "blue_white_veil",
+    "atyp_vascular",
+    "irreg_streaks",
+    "irreg_pigment",
+    "irreg_dots",
+    "regression"
+  ]
+}

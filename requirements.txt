@@ -5,3 +5,7 @@ pillow
 pandas
 transformers
 matplotlib
+peft
+joblib
+scikit-learn
+opencv-python-headless
